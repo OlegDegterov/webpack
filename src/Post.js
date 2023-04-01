@@ -1,13 +1,15 @@
 export class Post {
-  constructor(title){
+  constructor(title, image){
     this.title = title
+    this.image = image
     this.data = new Date()
   }
 
   toString(){
     JSON.stringify({
       title: this.title, 
-      date: this.data.toJSON()
+      date: this.data.toJSON(),
+      img: this.image
     })
   }
   get titleToUpperCase(){

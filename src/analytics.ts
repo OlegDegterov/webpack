@@ -1,8 +1,8 @@
 import _ from "lodash"
 
 function createAnalitics () {
-  let counter = 0
-  let isDestroyed = false
+  let counter: number = 0
+  let isDestroyed: boolean = false
   const listener = () => counter++
   document.addEventListener('click',listener)
 
@@ -25,4 +25,4 @@ function createAnalitics () {
     }
   }
 }
-window.analytics = createAnalitics()
+window['analytics'] = createAnalitics()

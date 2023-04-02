@@ -8,4 +8,12 @@ class Util {
 }
 console.log("Util id:", Util.id)
 
-const unUsed = 42
+import("lodash").then( (_) =>{
+    console.log("LODASH", _.random(0,100,true))
+  }
+)
+
+import("lodash").then(_=>{
+  console.log("LODAS - LOADED")
+}
+)

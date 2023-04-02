@@ -8,17 +8,33 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === "development"
 const isProd = !isDev
+
+const fileName = (extension) => {
+  isDev ? `[name].${extension}` : `[name].[contenthash].${extension}`
+}
+
+const cssLoaders = (loader) => {
+  let loaders = [{
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+    },
+  },'css-loader']
+  if (loader) {
+    loaders.push(loader)
+  }
+  return loaders
+}
 console.log("isDev", isDev)
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: "development",
   entry: {
-    main: './index.js',
+    main: ['@babel/polyfill','./index.js'],
     analytics: "./analytics.js"
   },
   output: {
-    filename: "[name].[contenthash].js",
+    filename: fileName("js"),
     path: path.resolve(__dirname, "dist")
   },
   resolve: {
@@ -56,26 +72,22 @@ module.exports = {
         }
     ]}),
     new MiniCssExtractPlugin({
-      filename:"[name].[contenthash].css"
+      filename: "[name].[contenthash].css"
     }),
   ],
   module: {
     rules: [
       {
         test: /\.css$/,
-        use:[{
-          loader: MiniCssExtractPlugin.loader,
-          options: {
-          },
-        },'css-loader']
+        use: cssLoaders()
       },
       {
         test: /\.less$/,
-        use:[{
-          loader: MiniCssExtractPlugin.loader,
-          options: {
-          },
-        },'css-loader','less-loader']
+        use: cssLoaders("less-loader")
+      },
+      {
+        test: /\.s[ac]ss$/,
+        use:cssLoaders("sass-loader")
       },
       {
         test: /\.(png|jpg|svg|gif|jpeg)$/,
@@ -93,6 +105,27 @@ module.exports = {
         test: /\.csv$/,
         use:['csv-loader']
       },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            "presets": [
+              [
+                "@babel/preset-env",
+                {
+                  "useBuiltIns": "entry",
+                  "corejs": "3.22"
+                }
+              ]
+            ],
+            plugins:[
+              
+            ]
+          }
+        }
+      }
     ]
   }
 }

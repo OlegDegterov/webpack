@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 function createAnalitics () {
   let counter = 0
   let isDestroyed = false
@@ -14,6 +16,12 @@ function createAnalitics () {
         return `Analitics is destroyed. Total clicks = ${counter}`
       }
       return counter
+    },
+    getMultiplyClicks(){
+      if (isDestroyed) {
+        return `Analitics is destroyed. Total multiplyclicks = ${_.multiply(counter, counter)}`
+      }
+      return _.multiply(counter, counter)
     }
   }
 }

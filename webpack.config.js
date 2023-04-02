@@ -43,7 +43,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: "development",
   entry: {
-    main: ['@babel/polyfill','./index.js'],
+    main: ['@babel/polyfill','./index.jsx'],
     analytics: "./analytics.ts"
   },
   output: {
@@ -135,13 +135,11 @@ module.exports = {
         }
       },
       {
-        test: /\.tsx$/,
+        test: /\.jsx$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-          options: {
-            "presets": babelOptions("@babel/preset-react")
-          },
+          options: babelOptions("@babel/preset-react")
         }
       }
     ]
